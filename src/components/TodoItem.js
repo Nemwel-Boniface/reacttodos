@@ -3,7 +3,27 @@ import React from 'react';
 import styles from "./TodoItem.module.css"
 
 class TodoItem extends React.Component {
+
+  state = {
+    editing: false,
+  }
+
+  handleEditing = () => {
+    this.setState({
+      editing: true,
+    })
+  }
+
   render() {
+
+    let viewMode = {}
+    let editMode = {}
+
+    if (this.state.editing) {
+      viewMode.display = "none"
+    } else {
+      editMode.display = "none"
+    }
 
     const completedStyle = {
       fontStyle: "italic",
@@ -17,12 +37,22 @@ class TodoItem extends React.Component {
     return (
      <div className={styles.todowrapper}>
         <li className={styles.item}>
-          < input type="checkbox"
-          className={styles.checkbox}
-          checked={completed}
-          onChange={() => this.props.handleChangeProps(id)}
-        />
-          {title}
+          <div onDoubleClick={this.handleEditing} style={viewMode}>
+            < input type="checkbox"
+              className={styles.checkbox}
+              checked={completed}
+              onChange={() => this.props.handleChangeProps(id)}
+            />
+            {title}
+          </div>
+          <input type="text"
+            style={editMode}
+            className={styles.textInput}
+            value={title}
+            onChange={e => {
+              this.props.setUpdate(e.target.value, id)
+            }}
+          />
         </li>
       <button onClick={() => this.props.deleteTodoProps(id)}>Delete</button>
       <span style={completed ? completedStyle : null}>
