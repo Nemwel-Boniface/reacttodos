@@ -14,6 +14,12 @@ class TodoItem extends React.Component {
     })
   }
 
+  handleUpdatedDone = event => {
+    if (event.key === "Enter") {
+      this.setState({ editing: false })
+    }
+  }
+
   render() {
 
     let viewMode = {}
@@ -52,6 +58,7 @@ class TodoItem extends React.Component {
             onChange={e => {
               this.props.setUpdate(e.target.value, id)
             }}
+            onKeyDown={this.handleUpdatedDone}
           />
         </li>
       <button onClick={() => this.props.deleteTodoProps(id)}>Delete</button>
